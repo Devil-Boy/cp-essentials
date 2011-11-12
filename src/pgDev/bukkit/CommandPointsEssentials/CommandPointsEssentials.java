@@ -33,6 +33,7 @@ public class CommandPointsEssentials extends JavaPlugin {
         
         // Send commands to the executor
         PluginCommand[] commands = {this.getCommand("creative"), 
+        							this.getCommand("survival"),
         							this.getCommand("tp"),
         							this.getCommand("give"),
         							this.getCommand("day"),

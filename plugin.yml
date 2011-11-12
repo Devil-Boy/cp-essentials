@@ -1,5 +1,37 @@
 name: CommandPointsEssentials
-
 main: pgDev.CommandPointsEssentials.CommandPointsEssentials
-
 version: 0.1
+author: Devil Boy
+description: Essential commands that any player can execute with the necessary amount of commandpoints.
+
+commands:
+   creative:
+      description: Easily switch to creative mode.
+      usage: /<command>
+   survival:
+      description: Easily switch to survival mode.
+      usage: /<command>
+   tp:
+      description: A simpler version of the teleport command.
+      usage: /<command> <otherplayer>
+   give:
+      description: A simpler version of the give command.
+      usage: /<command> <item> [amount]
+   day:
+      description: Makes it daytime.
+      usage: /<command>
+   night:
+      description: Makes it nighttime.
+      usage: /<command>
+      
+permissions:
+    CommandPoints.*:
+        default: op
+        description: Gives access to the essential admin commands.
+        children:
+    CommandPoints.creative:
+        default: op
+        description: Can switch to creative mode.
+    CommandPoints.survival:
+        default: op
+        description: Can switch to survival mode.
