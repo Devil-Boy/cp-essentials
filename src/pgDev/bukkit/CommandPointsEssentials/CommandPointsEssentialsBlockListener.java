@@ -1,4 +1,4 @@
-package pgDev.CommandPointsEssentials;
+package pgDev.bukkit.CommandPointsEssentials;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

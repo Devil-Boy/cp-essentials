@@ -1,4 +1,4 @@
-package pgDev.CommandPointsEssentials;
+package pgDev.bukkit.CommandPointsEssentials;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package pgDev.CommandPointsEssentials;
+package pgDev.bukkit.CommandPointsEssentials;
 
 import java.io.File;
 import java.util.HashMap;
@@ -19,7 +19,6 @@ import org.bukkit.plugin.PluginManager;
 public class CommandPointsEssentials extends JavaPlugin {
     private final CommandPointsEssentialsPlayerListener playerListener = new CommandPointsEssentialsPlayerListener(this);
     private final CommandPointsEssentialsBlockListener blockListener = new CommandPointsEssentialsBlockListener(this);
-    private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
 
     public void onEnable() {
         // TODO: Place any custom enable code here including the registration of any events
@@ -40,16 +39,6 @@ public class CommandPointsEssentials extends JavaPlugin {
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
         System.out.println("Goodbye world!");
     }
-    public boolean isDebugging(final Player player) {
-        if (debugees.containsKey(player)) {
-            return debugees.get(player);
-        } else {
-            return false;
-        }
-    }
-
-    public void setDebugging(final Player player, final boolean value) {
-        debugees.put(player, value);
-    }
+    
 }
 
