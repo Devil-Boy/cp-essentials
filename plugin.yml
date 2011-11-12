@@ -1,0 +1,5 @@
+name: CommandPointsEssentials
+
+main: pgDev.CommandPointsEssentials.CommandPointsEssentials
+
+version: 0.1
