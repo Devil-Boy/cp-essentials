@@ -19,5 +19,6 @@ public class CommandPointsEssentialsPlayerListener extends PlayerListener {
     }
 
     //Insert Player related code here
+    
 }
 
