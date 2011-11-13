@@ -1,0 +1,2 @@
+-Add configuration class (Being done by Devil)
+-Change successful command output color to blue and errors to red
