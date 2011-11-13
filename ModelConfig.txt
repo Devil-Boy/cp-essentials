@@ -1,0 +1,10 @@
+#
+# CommandPoints Essentials Configuration
+#
+
+# Command Costs
+#	Here you set the amount of commandpoints needed
+#	to run specific commands.
+ctp=1
+day=1
+night=1

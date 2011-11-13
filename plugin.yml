@@ -35,3 +35,6 @@ permissions:
     CommandPoints.survival:
         default: op
         description: Can switch to survival mode.
+    CommandPoints.cgive:
+        default: op
+        description: Can give themselves items.

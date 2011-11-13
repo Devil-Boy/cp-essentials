@@ -26,6 +26,10 @@ public class CommandPointsEssentials extends JavaPlugin {
     private final CommandPointsEssentialsPlayerListener playerListener = new CommandPointsEssentialsPlayerListener(this);
     private final CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
     
+    // File Locations
+    String pluginMainDir = "./plugins/CommandPointsEssentials";
+    String pluginConfigLocation = pluginMainDir + "/CommandPointsEssentials.cfg";
+    
     public void onEnable() {
 
         // Register our events
