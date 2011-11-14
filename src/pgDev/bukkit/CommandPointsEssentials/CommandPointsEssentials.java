@@ -41,6 +41,9 @@ public class CommandPointsEssentials extends JavaPlugin {
     // Plugin Configuration
     CPEConfig pluginSettings;
     
+    // Whether or not CommandPoints is on the server
+    boolean cpLoaded = false;
+    
     public void onEnable() {
     	// Check for the plugin directory (create if it does not exist)
     	File pluginDir = new File(pluginMainDir);
@@ -102,6 +105,7 @@ public class CommandPointsEssentials extends JavaPlugin {
         Plugin commandPoints = getServer().getPluginManager().getPlugin("CommandPoints");
         
         if (commandPoints != null) {
+        	cpLoaded = true;
             cpAPI = ((CommandPoints)commandPoints).getAPI();
         } else {
         	System.out.println("CommandPoints was not found on this server.");
