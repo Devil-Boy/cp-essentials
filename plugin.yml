@@ -11,11 +11,14 @@ commands:
    survival:
       description: Easily switch to survival mode.
       usage: /<command>
-   tp:
+   ctp:
       description: A simpler version of the teleport command.
       usage: /<command> <otherplayer>
-   give:
+   cgive:
       description: A simpler version of the give command.
+      usage: /<command> <item> [amount]
+   i:
+      description: A short form of the cgive command.
       usage: /<command> <item> [amount]
    day:
       description: Makes it daytime.
@@ -25,16 +28,37 @@ commands:
       usage: /<command>
       
 permissions:
-    CommandPoints.*:
+    CPE.*:
         default: op
         description: Gives access to the essential admin commands.
         children:
-    CommandPoints.creative:
+            CPE.creative: true
+            CPE.survival: true
+            CPE.cgive: true
+            CPE.ctp: true
+            CPE.day: true
+            CPE.night: true
+    CPE.creative:
         default: op
         description: Can switch to creative mode.
-    CommandPoints.survival:
+        command: "/creative"
+    CPE.survival:
         default: op
         description: Can switch to survival mode.
-    CommandPoints.cgive:
+        command: "/survival"
+    CPE.cgive:
         default: op
         description: Can give themselves items.
+        command: "/cgive"
+    CPE.ctp:
+        default: true
+        description: Can use points to teleport.
+        command: "/ctp"
+    CPE.day:
+        default: true
+        description: Can use points to change time to day.
+        command: "/day"
+    CPE.night:
+        default: true
+        description: Can use points to change time to night.
+        command: "/night"

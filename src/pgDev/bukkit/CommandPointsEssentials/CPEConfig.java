@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -18,18 +19,17 @@ public class CPEConfig {
 	public boolean upToDate = true;
 	
 	// List of Config Options
-	boolean gainlossConsoleOutput;
-	String logEvents;
-	boolean reduceOverhead;
+	HashMap<String, Integer> commandCosts = new HashMap<String, Integer>();
 	
 	public CPEConfig(Properties p, final CommandPointsEssentials plugin) {
         properties = p;
         this.plugin = plugin;
         
         // Grab values here.
-        gainlossConsoleOutput = getBoolean("gainlossConsoleOutput", false);
-        logEvents = getString("logEvents", "gain loss");
-        reduceOverhead = getBoolean("reduceOverhead", false);
+        commandCosts.put("ctp", getInt("ctp", 1));
+        commandCosts.put("day", getInt("day", 1));
+        commandCosts.put("night", getInt("night", 1));
+        
 	}
 	
 	// Value obtaining functions down below
