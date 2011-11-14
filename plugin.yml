@@ -56,19 +56,19 @@ permissions:
         description: Can use points to teleport.
         command: "/ctp"
     CPE.ctp.free:
-        default: true
+        default: op
         description: Can use the ctp command for free.
     CPE.day:
         default: true
         description: Can use points to change time to day.
         command: "/day"
     CPE.day.free:
-        default: true
+        default: op
         description: Can use the day command for free.
     CPE.night:
         default: true
         description: Can use points to change time to night.
         command: "/night"
     CPE.night.free:
-        default: true
+        default: op
         description: Can use the night command for free.

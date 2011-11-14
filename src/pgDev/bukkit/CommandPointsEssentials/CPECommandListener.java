@@ -33,7 +33,7 @@ public class CPECommandListener implements CommandExecutor{
 		}
 		
 		// CP Check
-		if (label.equalsIgnoreCase("creative") || label.equalsIgnoreCase("survival") || label.equalsIgnoreCase("ctp")) {
+		if ((label.equalsIgnoreCase("day") || label.equalsIgnoreCase("night") || label.equalsIgnoreCase("ctp")) && !plugin.cpLoaded) {
 			ply.sendMessage(ChatColor.RED + "This command is only availible on servers where CommandPoints is installed.");
 			return true;
 		}
