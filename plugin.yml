@@ -3,6 +3,7 @@ main: pgDev.bukkit.CommandPointsEssentials.CommandPointsEssentials
 version: 0.1
 author: Devil Boy
 description: Essential commands that any player can execute with the necessary amount of commandpoints.
+softdepend: [CommandPoints]
 
 commands:
    creative:

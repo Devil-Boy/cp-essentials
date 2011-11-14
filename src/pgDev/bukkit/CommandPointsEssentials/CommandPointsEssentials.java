@@ -32,7 +32,7 @@ public class CommandPointsEssentials extends JavaPlugin {
 	
 	// Listeners
     private final CommandPointsEssentialsPlayerListener playerListener = new CommandPointsEssentialsPlayerListener(this);
-    private final CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
+    private CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
     
     // File Locations
     String pluginMainDir = "./plugins/CommandPointsEssentials";
@@ -89,8 +89,11 @@ public class CommandPointsEssentials extends JavaPlugin {
         setupCommandPoints();
     	setupPermissions();
         
-        PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+    	// Check if we haven't disabled
+    	if (this.isEnabled()) {
+    		PluginDescriptionFile pdfFile = this.getDescription();
+            System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+    	}
     }
     
     public void onDisable() {
@@ -102,6 +105,9 @@ public class CommandPointsEssentials extends JavaPlugin {
         
         if (commandPoints != null) {
             cpAPI = ((CommandPoints)commandPoints).getAPI();
+        } else {
+        	System.out.println("CommandPoints was not found on this server.");
+        	//getServer().getPluginManager().disablePlugin(this);
         }
     }
     
