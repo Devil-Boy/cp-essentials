@@ -3,5 +3,5 @@
 -Convert the 3 non-commandpoint based commands (survival, creative, cgive) into permission based. [Done]
 	(My bad, I forgot to mention that those 3 aren't based on points... -Devil)
 -Fix uncaught exception errors in /ctp /night /day [Done]
--Make it so that if CommandPoints is not on the server, commands dependent on it are disabled
--Create a permission for ops to make commands free.
+-Make it so that if CommandPoints is not on the server, commands dependent on it are disabled [Done]
+-Create a permission for ops to make commands free. [Done]

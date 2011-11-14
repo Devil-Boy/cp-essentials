@@ -32,6 +32,12 @@ public class CPECommandListener implements CommandExecutor{
 			return true;
 		}
 		
+		// CP Check
+		if (label.equalsIgnoreCase("creative") || label.equalsIgnoreCase("survival") || label.equalsIgnoreCase("ctp")) {
+			ply.sendMessage(ChatColor.RED + "This command is only availible on servers where CommandPoints is installed.");
+			return true;
+		}
+		
 		// creative command
 		if(label.equalsIgnoreCase("creative")){
 			if (plugin.hasPermissions(ply, "CPE.creative")) {
@@ -65,6 +71,7 @@ public class CPECommandListener implements CommandExecutor{
 				return true;
 			}
 			
+			// For free
 			if (plugin.hasPermissions(ply, "CPE.day.free")) {
 				ply.getWorld().setTime(0);
 				return true;
@@ -94,8 +101,10 @@ public class CPECommandListener implements CommandExecutor{
 				return true;
 			}
 			
+			// For free
 			if (plugin.hasPermissions(ply, "CPE.night.free")) {
 				ply.getWorld().setTime(14000);
+				return true;
 			}
 			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
@@ -171,14 +180,13 @@ public class CPECommandListener implements CommandExecutor{
 			Player otherPly = plugin.getServer().getPlayer(args[0]);
 			
 			if(plugin.hasPermissions(ply, "CPE.ctp.free")) {
-	
 				if(otherPly != null) {
 					ply.teleport(otherPly);
 					return true;
+				} else{
+					ply.sendMessage(ChatColor.RED + "Player not found.");
+					return true;
 				}
-				
-				else{ply.sendMessage(ChatColor.RED + "Player not found.");
-	
 			}
 			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
@@ -188,9 +196,18 @@ public class CPECommandListener implements CommandExecutor{
 						cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("ctp"), "Teleported to " + otherPly.getName(), plugin);
 						ply.sendMessage(ChatColor.BLUE + "You still have: "+cpAPI.getPoints(ply.getName(), plugin)+" Points left");
 						return true;
-					}else{ply.sendMessage(ChatColor.RED + "Player not found.");}
-				}else{ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");}
-			}else{ply.sendMessage(ChatColor.RED + "You don't have an account.");}
+					}else{
+						ply.sendMessage(ChatColor.RED + "Player not found.");
+						return true;
+					}
+				}else{
+					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
+					return true;
+				}
+			}else{
+				ply.sendMessage(ChatColor.RED + "You don't have an account.");
+				return true;
+			}
 			
 		}
 		
