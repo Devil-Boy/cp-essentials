@@ -64,6 +64,11 @@ public class CPECommandListener implements CommandExecutor{
 				return true;
 			}
 			
+			if (plugin.hasPermissions(ply, "CPE.day.free")) {
+				ply.getWorld().setTime(0);
+				return true;
+			}
+			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
 				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("day"), plugin)){
 					ply.getWorld().setTime(0);

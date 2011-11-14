@@ -32,7 +32,7 @@ public class CommandPointsEssentials extends JavaPlugin {
 	
 	// Listeners
     private final CommandPointsEssentialsPlayerListener playerListener = new CommandPointsEssentialsPlayerListener(this);
-    private CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
+    //private CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
     
     // File Locations
     String pluginMainDir = "./plugins/CommandPointsEssentials";
@@ -70,10 +70,12 @@ public class CommandPointsEssentials extends JavaPlugin {
         	System.out.println("Could not load CommandPoints Essentials configuration! " + e);
         }
 
-        // Register our events
-        PluginManager pm = getServer().getPluginManager();
+        // Integrations turn on!
+        setupCommandPoints();
+    	setupPermissions();
         
         // Send commands to the executor
+    	CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
         PluginCommand[] commands = {this.getCommand("creative"), 
         							this.getCommand("survival"),
         							this.getCommand("ctp"),
@@ -84,10 +86,6 @@ public class CommandPointsEssentials extends JavaPlugin {
         for (int i=0; i < commands.length; i++) {
         	commands[i].setExecutor(commandListener);
         }
-        
-        // Integrations turn on!
-        setupCommandPoints();
-    	setupPermissions();
         
     	// Check if we haven't disabled
     	if (this.isEnabled()) {
@@ -101,7 +99,7 @@ public class CommandPointsEssentials extends JavaPlugin {
     }
     
     private void setupCommandPoints() {
-        Plugin commandPoints = this.getServer().getPluginManager().getPlugin("CommandPoints");
+        Plugin commandPoints = getServer().getPluginManager().getPlugin("CommandPoints");
         
         if (commandPoints != null) {
             cpAPI = ((CommandPoints)commandPoints).getAPI();
