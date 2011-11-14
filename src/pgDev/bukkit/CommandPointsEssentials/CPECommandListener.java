@@ -38,7 +38,8 @@ public class CPECommandListener implements CommandExecutor{
 				ply.setGameMode(GameMode.CREATIVE);
 				//ply.sendMessage(ChatColor.BLUE + "You are now in creative mode.");
 				return true;
-			} else {
+			}	
+			else {
 				ply.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
 				return true;
 			}
@@ -91,6 +92,10 @@ public class CPECommandListener implements CommandExecutor{
 			if (!plugin.hasPermissions(ply, "CPE.night")) {
 				ply.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
 				return true;
+			}
+			
+			if (plugin.hasPermissions(ply, "CPE.night.free")) {
+				ply.getWorld().setTime(14000);
 			}
 			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
@@ -164,6 +169,17 @@ public class CPECommandListener implements CommandExecutor{
 			}
 			
 			Player otherPly = plugin.getServer().getPlayer(args[0]);
+			
+			if(plugin.hasPermissions(ply, "CPE.ctp.free")) {
+	
+				if(otherPly != null) {
+					ply.teleport(otherPly);
+					return true;
+				}
+				
+				else{ply.sendMessage(ChatColor.RED + "Player not found.");
+	
+			}
 			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
 				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("ctp"), plugin)){
