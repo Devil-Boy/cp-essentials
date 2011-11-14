@@ -85,7 +85,8 @@ public class CommandPointsEssentials extends JavaPlugin {
         	commands[i].setExecutor(commandListener);
         }
         
-        // Permissions turn on!
+        // Integrations turn on!
+        setupCommandPoints();
     	setupPermissions();
         
         PluginDescriptionFile pdfFile = this.getDescription();

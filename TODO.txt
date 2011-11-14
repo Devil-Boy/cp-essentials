@@ -2,3 +2,4 @@
 -Change successful command output color to blue and errors to red [Done]
 -Convert the 3 non-commandpoint based commands (survival, creative, cgive) into permission based. [Done]
 	(My bad, I forgot to mention that those 3 aren't based on points... -Devil)
+-Fix uncaught exception errors in /ctp /night /day

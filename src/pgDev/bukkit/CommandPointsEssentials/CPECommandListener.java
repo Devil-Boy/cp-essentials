@@ -111,7 +111,8 @@ public class CPECommandListener implements CommandExecutor{
 			int id;
 			
 			if(args.length == 0){
-				ply.sendMessage(ChatColor.RED + "Not enough arguments.");
+				ply.sendMessage(ChatColor.GREEN + "Usage: /" + label + " <item> [amount]");
+				ply.sendMessage(ChatColor.GREEN + "Note: Underscores are part of the names of certain items.");
 				return true;
 			}
 			
@@ -119,7 +120,7 @@ public class CPECommandListener implements CommandExecutor{
 				try{
 					amount = Integer.parseInt(args[1]);
 				}catch(NumberFormatException e){
-					ply.sendMessage(ChatColor.RED + "Invalid Argument");
+					ply.sendMessage(ChatColor.RED + "The amount you supplied was not a valid number.");
 					return true;
 				}
 			}
@@ -128,7 +129,7 @@ public class CPECommandListener implements CommandExecutor{
 				id = Integer.parseInt(args[0]);
 				item = Material.getMaterial(id);
 			}catch(NumberFormatException e){
-				item = Material.getMaterial(args[0]);
+				item = Material.getMaterial(args[0].toUpperCase());
 			}
 			
 			if (plugin.hasPermissions(ply, "CPE.cgive")) {
@@ -153,7 +154,7 @@ public class CPECommandListener implements CommandExecutor{
 			}
 			
 			if(args.length == 0){
-				ply.sendMessage(ChatColor.RED + "Not enough arguments.");
+				ply.sendMessage(ChatColor.GREEN + "Usage /" + label + "<otherplayer>");
 				return true;
 			}
 			
