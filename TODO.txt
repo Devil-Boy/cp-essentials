@@ -5,3 +5,5 @@
 -Fix uncaught exception errors in /ctp /night /day [Done]
 -Make it so that if CommandPoints is not on the server, commands dependent on it are disabled [Done]
 -Create a permission for ops to make commands free. [Done]
+-Make it so that the otherplayer can reject/accept someone teleporting to them
+-Make it so that someone can request someone to teleport to them using: /ctp -r <player>
