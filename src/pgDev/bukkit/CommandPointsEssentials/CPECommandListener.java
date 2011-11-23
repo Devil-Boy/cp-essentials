@@ -62,35 +62,35 @@ public class CPECommandListener implements CommandExecutor{
 				}
 				if (plugin.hasPermissions(ply, "CPE.ctp")) {
 					if (plugin.hasPermissions(ply, "CPE.ctp.free")) {
-						availableCommands.add("/ctp [free]");
+						availableCommands.add("/ctp [-r] (free)");
 					} else {
 						availableCommands.add("/ctp");
 					}
 				}
 				if (plugin.hasPermissions(ply, "CPE.day")) {
 					if (plugin.hasPermissions(ply, "CPE.day.free")) {
-						availableCommands.add("/day [free]");
+						availableCommands.add("/day (free)");
 					} else {
 						availableCommands.add("/day");
 					}
 				}
 				if (plugin.hasPermissions(ply, "CPE.night")) {
 					if (plugin.hasPermissions(ply, "CPE.night.free")) {
-						availableCommands.add("/night [free]");
+						availableCommands.add("/night (free)");
 					} else {
 						availableCommands.add("/night");
 					}
 				}
 				if (plugin.hasPermissions(ply, "CPE.spawn")) {
 					if (plugin.hasPermissions(ply, "CPE.spawn.free")) {
-						availableCommands.add("/spawn [free]");
+						availableCommands.add("/spawn (free)");
 					} else {
 						availableCommands.add("/spawn");
 					}
 				}
 				if (plugin.hasPermissions(ply, "CPE.bed")) {
 					if (plugin.hasPermissions(ply, "CPE.bed.free")) {
-						availableCommands.add("/bed [free]");
+						availableCommands.add("/bed (free)");
 					} else {
 						availableCommands.add("/bed");
 					}

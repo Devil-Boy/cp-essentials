@@ -11,8 +11,6 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
-import pgDev.bukkit.CommandPoints.CommandPoints;
-
 public class CPEConfig {
 	private Properties properties;
 	private final CommandPointsEssentials plugin;
