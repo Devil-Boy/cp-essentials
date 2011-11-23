@@ -1,13 +1,9 @@
 package pgDev.bukkit.CommandPointsEssentials;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.HashMap;
-import java.util.Properties;
+import java.io.*;
+import java.util.*;
 
-import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
-import org.bukkit.Server;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.*;
@@ -44,6 +40,12 @@ public class CommandPointsEssentials extends JavaPlugin {
     // Whether or not CommandPoints is on the server
     boolean cpLoaded = false;
     
+    // The CTP Request Database
+    HashMap<String, CTPRequest> ctps = new HashMap<String, CTPRequest>(); // The string is the person the request is sent to.
+    
+    // /accept vs /caccept
+    String cAcceptOr;
+    
     public void onEnable() {
     	// Check for the plugin directory (create if it does not exist)
     	File pluginDir = new File(pluginMainDir);
@@ -79,16 +81,36 @@ public class CommandPointsEssentials extends JavaPlugin {
         
         // Send commands to the executor
     	CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
-        PluginCommand[] commands = {this.getCommand("creative"), 
-        							this.getCommand("survival"),
-        							this.getCommand("ctp"),
-        							this.getCommand("cgive"),
-        							this.getCommand("i"),
-        							this.getCommand("day"),
-        							this.getCommand("night")};
-        for (int i=0; i < commands.length; i++) {
-        	commands[i].setExecutor(commandListener);
+        String[] commandList = {"chelp", "creative", "survival", "ctp", "cgive", "i", "day", "night",
+        		"spawn", "bed", "accept", "caccept", "reject", "creject"};
+        boolean backupAccept = false;
+        for (int i=0; i < commandList.length; i++) {
+        	try {
+        		this.getCommand(commandList[i]).setExecutor(commandListener);
+        	} catch (NullPointerException e) {
+        		if (commandList[i].equals("i")) {
+        			System.out.println("Another plugin is using the /i command. CPE will default to /cgive.");
+        		} else if (commandList[i].equals("accept")) {
+        			backupAccept = true;
+        			System.out.println("Another plugin is using the /accept command. CPE will default to /caccept.");
+        		} else if (commandList[i].equals("reject")) {
+        			backupAccept = true;
+        			System.out.println("Another plugin is using the /reject command. CPE will default to /creject.");
+        		} else {
+        			System.out.println("Another plugin is using CPE's /" + commandList[i] + " command! CPE will be unable to provide the function which that command supplies.");
+        		}
+        	}
         }
+        // set the return for accept vs caccept
+        if (backupAccept) {
+        	cAcceptOr = "/caccept or /creject";
+        } else {
+        	cAcceptOr = "/accept or /reject";
+        }
+        
+        // Register events
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
         
     	// Check if we haven't disabled
     	if (this.isEnabled()) {

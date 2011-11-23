@@ -1,11 +1,7 @@
 package pgDev.bukkit.CommandPointsEssentials;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 
 /**
  * Handle events for all Player related events
@@ -18,7 +14,15 @@ public class CommandPointsEssentialsPlayerListener extends PlayerListener {
         plugin = instance;
     }
 
-    //Insert Player related code here
+    public void onPlayerQuit(PlayerQuitEvent event) {
+    	if (plugin.ctps.containsKey(event.getPlayer().getName())) {
+    		Player requester = plugin.getServer().getPlayer(plugin.ctps.get(event.getPlayer()).requesterName);
+    		if (requester != null) {
+    			requester.sendMessage(event.getPlayer().getName() + " has left the server. Your ctp request has been terminated.");
+    		}
+    		plugin.ctps.remove(event.getPlayer());
+    	}
+    }
     
 }
 

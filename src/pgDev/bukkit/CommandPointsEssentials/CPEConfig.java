@@ -29,6 +29,8 @@ public class CPEConfig {
         commandCosts.put("ctp", getInt("ctp", 1));
         commandCosts.put("day", getInt("day", 1));
         commandCosts.put("night", getInt("night", 1));
+        commandCosts.put("spawn", getInt("spawn", 1));
+        commandCosts.put("bed", getInt("bed", 1));
         
 	}
 	
@@ -151,9 +153,11 @@ public class CPEConfig {
     		out.write("# Command Costs\r\n");
     		out.write("#	Here you set the amount of commandpoints needed\r\n");
     		out.write("#	to run specific commands.\r\n");
-    		out.write("ctp=1\r\n");
-    		out.write("day=1\r\n");
-    		out.write("night=1\r\n");
+    		out.write("ctp=" + commandCosts.get("ctp") + "\r\n");
+    		out.write("day=" + commandCosts.get("day") + "\r\n");
+    		out.write("night=" + commandCosts.get("night") + "\r\n");
+    		out.write("spawn=" + commandCosts.get("spawn") + "\r\n");
+    		out.write("bed=" + commandCosts.get("bed") + "\r\n");
     		out.close();
     	} catch (Exception e) {
     		System.out.println(e);

@@ -8,3 +8,5 @@
 ctp=1
 day=1
 night=1
+spawn=1
+bed=1

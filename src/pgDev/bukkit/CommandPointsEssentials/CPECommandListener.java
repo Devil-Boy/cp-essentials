@@ -1,7 +1,10 @@
 package pgDev.bukkit.CommandPointsEssentials;
 
+import java.util.LinkedList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pgDev.bukkit.CommandPoints.CommandPoints;
 import pgDev.bukkit.CommandPoints.CommandPointsAPI;
 
 public class CPECommandListener implements CommandExecutor{
@@ -33,9 +35,81 @@ public class CPECommandListener implements CommandExecutor{
 		}
 		
 		// CP Check
-		if ((label.equalsIgnoreCase("day") || label.equalsIgnoreCase("night") || label.equalsIgnoreCase("ctp")) && !plugin.cpLoaded) {
+		if ((label.equalsIgnoreCase("chelp") || label.equalsIgnoreCase("day") || label.equalsIgnoreCase("night") || label.equalsIgnoreCase("ctp") || label.equalsIgnoreCase("spawn") || label.equalsIgnoreCase("bed")) && !plugin.cpLoaded) {
 			ply.sendMessage(ChatColor.RED + "This command is only availible on servers where CommandPoints is installed.");
 			return true;
+		}
+		
+		// chelp command
+		if(label.equalsIgnoreCase("chelp")){
+			if (plugin.hasPermissions(ply, "CPE.chelp")) {
+				if (!cpAPI.hasAccount(ply.getName(), plugin)) {
+					ply.sendMessage(ChatColor.RED + "You do not have an account. Rejoin the server to create one.");
+					return true;
+				}
+				
+				// Start listing commands
+				ply.sendMessage(ChatColor.GREEN + "CPE commands available to you:");
+				LinkedList<String> availableCommands = new LinkedList<String>();
+				if (plugin.hasPermissions(ply, "CPE.creative")) {
+					availableCommands.add("/creative");
+				}
+				if (plugin.hasPermissions(ply, "CPE.survival")) {
+					availableCommands.add("/survival");
+				}
+				if (plugin.hasPermissions(ply, "CPE.cgive")) {
+					availableCommands.add("/cgive or /i");
+				}
+				if (plugin.hasPermissions(ply, "CPE.ctp")) {
+					if (plugin.hasPermissions(ply, "CPE.ctp.free")) {
+						availableCommands.add("/ctp [free]");
+					} else {
+						availableCommands.add("/ctp");
+					}
+				}
+				if (plugin.hasPermissions(ply, "CPE.day")) {
+					if (plugin.hasPermissions(ply, "CPE.day.free")) {
+						availableCommands.add("/day [free]");
+					} else {
+						availableCommands.add("/day");
+					}
+				}
+				if (plugin.hasPermissions(ply, "CPE.night")) {
+					if (plugin.hasPermissions(ply, "CPE.night.free")) {
+						availableCommands.add("/night [free]");
+					} else {
+						availableCommands.add("/night");
+					}
+				}
+				if (plugin.hasPermissions(ply, "CPE.spawn")) {
+					if (plugin.hasPermissions(ply, "CPE.spawn.free")) {
+						availableCommands.add("/spawn [free]");
+					} else {
+						availableCommands.add("/spawn");
+					}
+				}
+				if (plugin.hasPermissions(ply, "CPE.bed")) {
+					if (plugin.hasPermissions(ply, "CPE.bed.free")) {
+						availableCommands.add("/bed [free]");
+					} else {
+						availableCommands.add("/bed");
+					}
+				}
+				String outCommandList = "";
+				for (String leCommand : availableCommands) {
+					if (outCommandList.equals("")) {
+						outCommandList = leCommand;
+					} else {
+						outCommandList =outCommandList + ", " + leCommand;
+					}
+				}
+				ply.sendMessage(outCommandList);
+				return true;
+			}	
+			else {
+				ply.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
+				return true;
+			}
 		}
 		
 		// creative command
@@ -164,7 +238,7 @@ public class CPECommandListener implements CommandExecutor{
 			}
 		}
 		
-		// tp command
+		// ctp command
 		if(label.equalsIgnoreCase("ctp")){
 			// Check for permissions
 			if (!plugin.hasPermissions(ply, "CPE.ctp")) {
@@ -173,42 +247,184 @@ public class CPECommandListener implements CommandExecutor{
 			}
 			
 			if(args.length == 0){
-				ply.sendMessage(ChatColor.GREEN + "Usage /" + label + "<otherplayer>");
+				ply.sendMessage(ChatColor.GREEN + "Usage /" + label + " [-r] <otherplayer>");
 				return true;
 			}
 			
-			Player otherPly = plugin.getServer().getPlayer(args[0]);
+			Player otherPly;
+			boolean toTheRequester = false;
+			if (args[0].equals("-r")) {
+				if (args.length < 2) {
+					ply.sendMessage(ChatColor.RED + "You failed to specify the other player.");
+					return true;
+				} else {
+					otherPly = plugin.getServer().getPlayer(args[1]);
+				}
+				toTheRequester = true;
+			} else {
+				otherPly = plugin.getServer().getPlayer(args[0]);
+			}
 			
 			if(plugin.hasPermissions(ply, "CPE.ctp.free")) {
 				if(otherPly != null) {
-					ply.teleport(otherPly);
-					return true;
+					if (plugin.ctps.containsKey(otherPly.getName())) {
+						ply.sendMessage(ChatColor.RED + otherPly.getName() + " must still respond to another request.");
+						return true;
+					}
+					plugin.ctps.put(otherPly.getName(), new CTPRequest(ply.getName(), toTheRequester));
+					if (toTheRequester) {
+						otherPly.sendMessage(ChatColor.BLUE + ply.getName() + " wishes for you to teleport to them. Type: " + plugin.cAcceptOr);
+					} else {
+						otherPly.sendMessage(ChatColor.BLUE + ply.getName() + " wishes to teleport to you. Type: " + plugin.cAcceptOr);
+					}
+					ply.sendMessage(ChatColor.BLUE + "Your request has been sent to " + otherPly.getName() + ".");
 				} else{
 					ply.sendMessage(ChatColor.RED + "Player not found.");
-					return true;
 				}
+				return true;
 			}
 			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
 				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("ctp"), plugin)){
-					if(otherPly != null){
-						ply.teleport(otherPly);
-						cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("ctp"), "Teleported to " + otherPly.getName(), plugin);
-						ply.sendMessage(ChatColor.BLUE + "You still have: "+cpAPI.getPoints(ply.getName(), plugin)+" Points left");
-						return true;
-					}else{
+					if(otherPly != null) {
+						if (plugin.ctps.containsKey(otherPly.getName())) {
+							ply.sendMessage(ChatColor.RED + otherPly.getName() + " must still respond to another request.");
+							return true;
+						}
+						plugin.ctps.put(otherPly.getName(), new CTPRequest(ply.getName(), toTheRequester));
+						if (toTheRequester) {
+							otherPly.sendMessage(ChatColor.BLUE + ply.getName() + " wishes for you to teleport to them. Type: " + plugin.cAcceptOr);
+						} else {
+							otherPly.sendMessage(ChatColor.BLUE + ply.getName() + " wishes to teleport to you. Type: " + plugin.cAcceptOr);
+						}
+						ply.sendMessage(ChatColor.BLUE + "Your request has been sent to " + otherPly.getName() + ".");
+					} else{
 						ply.sendMessage(ChatColor.RED + "Player not found.");
-						return true;
 					}
 				}else{
 					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
+				}
+			}else{
+				ply.sendMessage(ChatColor.RED + "You don't have an account.");
+			}
+			return true;
+			
+		}
+		
+		// accept command
+		if (label.equalsIgnoreCase("accept") || label.equalsIgnoreCase("caccept")) {
+			if (plugin.ctps.containsKey(ply.getName())) {
+				Player requester = plugin.getServer().getPlayer(plugin.ctps.get(ply.getName()).requesterName);
+				if (requester == null) { // Check if requester is gone
+					ply.sendMessage(ChatColor.RED + plugin.ctps.get(ply.getName()).requesterName + " is no longer on the server. Request terminated.");
+					plugin.ctps.remove(ply.getName());
 					return true;
 				}
+				
+				if (!plugin.hasPermissions(requester, "CPE.ctp.free") && !cpAPI.hasPoints(requester.getName(), plugin.pluginSettings.commandCosts.get("ctp"), plugin)) { // Check for points
+					ply.sendMessage(ChatColor.RED + requester.getName() + " no longer has enough points to teleport. Request terminated.");
+					plugin.ctps.remove(ply.getName());
+					return true;
+				}
+				
+				if (plugin.ctps.get(ply.getName()).toRequester) {
+					ply.teleport(requester);
+					if (!plugin.hasPermissions(requester, "CPE.ctp.free")) {
+						cpAPI.removePoints(requester.getName(), plugin.pluginSettings.commandCosts.get("ctp"), "Teleported " + ply.getName() + " to self", plugin);
+					}
+				} else {
+					requester.teleport(ply);
+					if (!plugin.hasPermissions(requester, "CPE.ctp.free")) {
+						cpAPI.removePoints(requester.getName(), plugin.pluginSettings.commandCosts.get("ctp"), "Teleported to " + ply.getName(), plugin);
+					}
+				}
+				ply.sendMessage(ChatColor.BLUE + "Accepted!");
+				plugin.ctps.remove(ply.getName());
+				if (!plugin.hasPermissions(requester, "CPE.ctp.free")) {
+					requester.sendMessage(ChatColor.BLUE + "You now have " + cpAPI.getPoints(requester.getName(), plugin) + " points.");
+				}
+			}
+			return true;
+		}
+		
+		// reject command
+		if (label.equalsIgnoreCase("reject") || label.equalsIgnoreCase("creject")) {
+			if (plugin.ctps.containsKey(ply.getName())) {
+				Player requester = plugin.getServer().getPlayer(plugin.ctps.get(ply.getName()).requesterName);
+				if (requester != null) { // Check if requester is gone
+					requester.sendMessage(ChatColor.BLUE + ply.getName() + " rejected your request.");
+				}
+				ply.sendMessage(ChatColor.BLUE + "Rejected!");
+				plugin.ctps.remove(ply.getName());
+			}
+			return true;
+		}
+		
+		// spawn command
+		if (label.equalsIgnoreCase("spawn")) {
+			// Check for permissions
+			if (!plugin.hasPermissions(ply, "CPE.spawn")) {
+				ply.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
+				return true;
+			}
+			
+			if(plugin.hasPermissions(ply, "CPE.spawn.free")) {
+				ply.teleport(ply.getWorld().getSpawnLocation());
+				return true;
+			}
+			
+			if(cpAPI.hasAccount(ply.getName(), plugin)){
+				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("spawn"), plugin)){
+					ply.teleport(ply.getWorld().getSpawnLocation());
+					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("ctp"), "Teleported to spawn", plugin);
+					ply.sendMessage(ChatColor.BLUE + "You still have: " + cpAPI.getPoints(ply.getName(), plugin) + " points left");
+				}else{
+					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
+				}
+				return true;
 			}else{
 				ply.sendMessage(ChatColor.RED + "You don't have an account.");
 				return true;
 			}
+		}
+		
+		// bed command
+		if (label.equalsIgnoreCase("bed")) {
+			// Check for permissions
+			if (!plugin.hasPermissions(ply, "CPE.bed")) {
+				ply.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
+				return true;
+			}
 			
+			if(plugin.hasPermissions(ply, "CPE.bed.free")) {
+				Location playerBed = ply.getBedSpawnLocation();
+				if (playerBed == null) {
+					ply.sendMessage(ChatColor.RED + "Either you have not slept in a bed yet, or your current bed spawn is invalid.");
+					return true;
+				}
+				ply.teleport(playerBed);
+				return true;
+			}
+			
+			if(cpAPI.hasAccount(ply.getName(), plugin)){
+				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("spawn"), plugin)){
+					Location playerBed = ply.getBedSpawnLocation();
+					if (playerBed == null) {
+						ply.sendMessage(ChatColor.RED + "Either you have not slept in a bed yet, or your current bed spawn is invalid.");
+						return true;
+					}
+					ply.teleport(playerBed);
+					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("bed"), "Teleported to bed", plugin);
+					ply.sendMessage(ChatColor.BLUE + "You still have: " + cpAPI.getPoints(ply.getName(), plugin) + " points left");
+					return true;
+				}else{
+					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
+				}
+				return true;
+			}else{
+				ply.sendMessage(ChatColor.RED + "You don't have an account.");
+				return true;
+			}
 		}
 		
 		return false;

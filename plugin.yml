@@ -1,11 +1,15 @@
 name: CommandPointsEssentials
 main: pgDev.bukkit.CommandPointsEssentials.CommandPointsEssentials
-version: 0.1
-author: Devil Boy
+version: 0.2
+author: PG Dev Team
+authors: [Devil Boy, Blackside921]
 description: Essential commands that any player can execute with the necessary amount of commandpoints.
 softdepend: [CommandPoints]
 
 commands:
+   chelp:
+      description: Check what commands are available to you.
+      usage: /<command>
    creative:
       description: Easily switch to creative mode.
       usage: /<command>
@@ -27,6 +31,24 @@ commands:
    night:
       description: Makes it nighttime.
       usage: /<command>
+   spawn:
+      description: Teleport to the spawn.
+      usage: /<command>
+   bed:
+      description: Teleport to your last sleep location.
+      usage: /<command>
+   accept:
+      description: Accept a teleport request.
+      usage: /<command>
+   caccept:
+      description: An alternate for the accept command.
+      usage: /<command>
+   reject:
+      description: Reject a teleport request.
+      usage: /<command>
+   creject:
+      description: An alternate for the reject command.
+      usage: /<command>
       
 permissions:
     CPE.*:
@@ -39,6 +61,10 @@ permissions:
             CPE.ctp: true
             CPE.day: true
             CPE.night: true
+    CPE.chelp:
+        default: true
+        description: Is allowed to see what commands are available.
+        command: "/chelp"
     CPE.creative:
         default: op
         description: Can switch to creative mode.
@@ -72,3 +98,17 @@ permissions:
     CPE.night.free:
         default: op
         description: Can use the night command for free.
+    CPE.spawn:
+        default: true
+        description: Can teleport to the spawn.
+        command: "/spawn"
+    CPE.spawn.free:
+        default: op
+        description: Can teleport to the spawn for free.
+    CPE.bed:
+        default: true
+        description: Can teleport to last bed slept in.
+        command: "/bed"
+    CPE.bed.free:
+        default: op
+        description: Can teleport to bed for free.
