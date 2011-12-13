@@ -1,10 +1,10 @@
 name: CommandPointsEssentials
 main: pgDev.bukkit.CommandPointsEssentials.CommandPointsEssentials
-version: 0.2
+version: 0.3
 author: PG Dev Team
 authors: [Devil Boy, Blackside921]
 description: Essential commands that any player can execute with the necessary amount of commandpoints.
-softdepend: [CommandPoints]
+softdepend: [CommandPoints, mcMMO]
 
 commands:
    chelp:
@@ -48,6 +48,9 @@ commands:
       usage: /<command>
    creject:
       description: An alternate for the reject command.
+      usage: /<command>
+   buyexp:
+      description: Purchase EXP levels.
       usage: /<command>
       
 permissions:
@@ -112,3 +115,10 @@ permissions:
     CPE.bed.free:
         default: op
         description: Can teleport to bed for free.
+    CPE.buyexp:
+        default: true
+        description: Can buy EXP levels.
+        command: "/buyexp"
+    CPE.buyexp.free:
+        default: op
+        description: Can get EXP levels for free.

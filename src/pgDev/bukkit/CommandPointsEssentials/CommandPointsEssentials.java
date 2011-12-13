@@ -82,8 +82,11 @@ public class CommandPointsEssentials extends JavaPlugin {
         // Send commands to the executor
     	CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
         String[] commandList = {"chelp", "creative", "survival", "ctp", "cgive", "i", "day", "night",
-        		"spawn", "bed", "accept", "caccept", "reject", "creject"};
+        		"spawn", "bed", "accept", "caccept", "reject", "creject", "buyexp"};
         boolean backupAccept = false;
+        if (mcMMOinstalled()) {
+        	backupAccept = true;
+        }
         for (int i=0; i < commandList.length; i++) {
         	try {
         		this.getCommand(commandList[i]).setExecutor(commandListener);
@@ -153,6 +156,16 @@ public class CommandPointsEssentials extends JavaPlugin {
         } else {
             return player.hasPermission(node);
         }
+    }
+    
+    // Check for mcMMO
+    boolean mcMMOinstalled() {
+    	Plugin mcMMO = getServer().getPluginManager().getPlugin("mcMMO");
+    	if (mcMMO == null) {
+    		return false;
+    	} else {
+    		return true;
+    	}
     }
     
 }

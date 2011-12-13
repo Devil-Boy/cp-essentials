@@ -29,6 +29,7 @@ public class CPEConfig {
         commandCosts.put("night", getInt("night", 1));
         commandCosts.put("spawn", getInt("spawn", 1));
         commandCosts.put("bed", getInt("bed", 1));
+        commandCosts.put("buyexp", getInt("buyexp", 1));
         
 	}
 	
@@ -156,6 +157,7 @@ public class CPEConfig {
     		out.write("night=" + commandCosts.get("night") + "\r\n");
     		out.write("spawn=" + commandCosts.get("spawn") + "\r\n");
     		out.write("bed=" + commandCosts.get("bed") + "\r\n");
+    		out.write("buyexp=" + commandCosts.get("buyexp") + "\r\n");
     		out.close();
     	} catch (Exception e) {
     		System.out.println(e);

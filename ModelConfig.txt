@@ -10,3 +10,4 @@ day=1
 night=1
 spawn=1
 bed=1
+buyexp=1

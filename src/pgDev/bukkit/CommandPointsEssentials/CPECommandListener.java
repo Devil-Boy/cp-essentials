@@ -35,7 +35,7 @@ public class CPECommandListener implements CommandExecutor{
 		}
 		
 		// CP Check
-		if ((label.equalsIgnoreCase("chelp") || label.equalsIgnoreCase("day") || label.equalsIgnoreCase("night") || label.equalsIgnoreCase("ctp") || label.equalsIgnoreCase("spawn") || label.equalsIgnoreCase("bed")) && !plugin.cpLoaded) {
+		if ((label.equalsIgnoreCase("chelp") || label.equalsIgnoreCase("day") || label.equalsIgnoreCase("night") || label.equalsIgnoreCase("ctp") || label.equalsIgnoreCase("spawn") || label.equalsIgnoreCase("bed") || label.equalsIgnoreCase("buyexp")) && !plugin.cpLoaded) {
 			ply.sendMessage(ChatColor.RED + "This command is only availible on servers where CommandPoints is installed.");
 			return true;
 		}
@@ -93,6 +93,13 @@ public class CPECommandListener implements CommandExecutor{
 						availableCommands.add("/bed (free)");
 					} else {
 						availableCommands.add("/bed");
+					}
+				}
+				if (plugin.hasPermissions(ply, "CPE.buyexp")) {
+					if (plugin.hasPermissions(ply, "CPE.buyexp.free")) {
+						availableCommands.add("/buyexp (free)");
+					} else {
+						availableCommands.add("/buyexp");
 					}
 				}
 				String outCommandList = "";
@@ -184,7 +191,7 @@ public class CPECommandListener implements CommandExecutor{
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
 				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("night"), plugin)){
 					ply.getWorld().setTime(14000);
-					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("day"), "Changed time to night", plugin);
+					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("night"), "Changed time to night", plugin);
 					ply.sendMessage(ChatColor.BLUE + "You still have: "+cpAPI.getPoints(ply.getName(), plugin)+" points left");
 					return true;
 				} else {
@@ -376,16 +383,15 @@ public class CPECommandListener implements CommandExecutor{
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
 				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("spawn"), plugin)){
 					ply.teleport(ply.getWorld().getSpawnLocation());
-					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("ctp"), "Teleported to spawn", plugin);
+					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("spawn"), "Teleported to spawn", plugin);
 					ply.sendMessage(ChatColor.BLUE + "You still have: " + cpAPI.getPoints(ply.getName(), plugin) + " points left");
 				}else{
 					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
 				}
-				return true;
 			}else{
 				ply.sendMessage(ChatColor.RED + "You don't have an account.");
-				return true;
 			}
+			return true;
 		}
 		
 		// bed command
@@ -407,7 +413,7 @@ public class CPECommandListener implements CommandExecutor{
 			}
 			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
-				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("spawn"), plugin)){
+				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("bed"), plugin)){
 					Location playerBed = ply.getBedSpawnLocation();
 					if (playerBed == null) {
 						ply.sendMessage(ChatColor.RED + "Either you have not slept in a bed yet, or your current bed spawn is invalid.");
@@ -416,15 +422,41 @@ public class CPECommandListener implements CommandExecutor{
 					ply.teleport(playerBed);
 					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("bed"), "Teleported to bed", plugin);
 					ply.sendMessage(ChatColor.BLUE + "You still have: " + cpAPI.getPoints(ply.getName(), plugin) + " points left");
-					return true;
 				}else{
 					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
 				}
-				return true;
 			}else{
 				ply.sendMessage(ChatColor.RED + "You don't have an account.");
+			}
+			return true;
+		}
+		
+		
+		// buyexp command
+		if (label.equalsIgnoreCase("buyexp")) {
+			// Check for permissions
+			if (!plugin.hasPermissions(ply, "CPE.buyexp")) {
+				ply.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
 				return true;
 			}
+			
+			if(plugin.hasPermissions(ply, "CPE.bed.free")) {
+				ply.setLevel(ply.getLevel() + 1);
+				return true;
+			}
+			
+			if(cpAPI.hasAccount(ply.getName(), plugin)){
+				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("buyexp"), plugin)){
+					ply.setLevel(ply.getLevel() + 1);
+					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("buyexp"), "Teleported to bed", plugin);
+					ply.sendMessage(ChatColor.BLUE + "You still have: " + cpAPI.getPoints(ply.getName(), plugin) + " points left");
+				}else{
+					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
+				}
+			}else{
+				ply.sendMessage(ChatColor.RED + "You don't have an account.");
+			}
+			return true;
 		}
 		
 		return false;

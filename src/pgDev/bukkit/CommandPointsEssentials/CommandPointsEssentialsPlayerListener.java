@@ -16,7 +16,7 @@ public class CommandPointsEssentialsPlayerListener extends PlayerListener {
 
     public void onPlayerQuit(PlayerQuitEvent event) {
     	if (plugin.ctps.containsKey(event.getPlayer().getName())) {
-    		Player requester = plugin.getServer().getPlayer(plugin.ctps.get(event.getPlayer()).requesterName);
+    		Player requester = plugin.getServer().getPlayer(plugin.ctps.get(event.getPlayer().getName()).requesterName);
     		if (requester != null) {
     			requester.sendMessage(event.getPlayer().getName() + " has left the server. Your ctp request has been terminated.");
     		}
