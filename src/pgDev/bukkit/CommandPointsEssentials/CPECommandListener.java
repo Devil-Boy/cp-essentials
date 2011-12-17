@@ -440,15 +440,45 @@ public class CPECommandListener implements CommandExecutor{
 				return true;
 			}
 			
+			int lvls;
 			if(plugin.hasPermissions(ply, "CPE.bed.free")) {
-				ply.setLevel(ply.getLevel() + 1);
+				if (args.length == 0) {
+					ply.setLevel(ply.getLevel() + 1);
+				} else {
+					try {
+						lvls = Integer.parseInt(args[0]);
+						if (lvls < 1) {
+							ply.sendMessage(ChatColor.RED + "You did not specify positive number.");
+						} else {
+							ply.setLevel(ply.getLevel() + lvls);
+						}
+					} catch (NumberFormatException e) {
+						ply.sendMessage(ChatColor.RED + "You did not specify a valid number.");
+					}
+				}
 				return true;
 			}
 			
 			if(cpAPI.hasAccount(ply.getName(), plugin)){
-				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("buyexp"), plugin)){
-					ply.setLevel(ply.getLevel() + 1);
-					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("buyexp"), "Teleported to bed", plugin);
+				if (args.length == 0) {
+					lvls =1;
+				} else {
+					try {
+						lvls = Integer.parseInt(args[0]);
+						if (lvls < 1) {
+							ply.sendMessage(ChatColor.RED + "You did not specify positive number of levels.");
+							return true;
+						}
+					} catch (NumberFormatException e) {
+						ply.sendMessage(ChatColor.RED + "You did not specify a valid number.");
+						return true;
+					}
+				}
+				
+				
+				if(cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("buyexp") * lvls, plugin)){
+					ply.setLevel(ply.getLevel() + lvls);
+					cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("buyexp") * lvls, "Purchased " + lvls + " experience levels", plugin);
 					ply.sendMessage(ChatColor.BLUE + "You still have: " + cpAPI.getPoints(ply.getName(), plugin) + " points left");
 				}else{
 					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
