@@ -18,6 +18,7 @@ public class CPEConfig {
 	
 	// List of Config Options
 	HashMap<String, Integer> commandCosts = new HashMap<String, Integer>();
+	boolean backAfterQuit = false;
 	
 	public CPEConfig(Properties p, final CommandPointsEssentials plugin) {
         properties = p;
@@ -30,6 +31,8 @@ public class CPEConfig {
         commandCosts.put("spawn", getInt("spawn", 1));
         commandCosts.put("bed", getInt("bed", 1));
         commandCosts.put("buyexp", getInt("buyexp", 1));
+        commandCosts.put("back", getInt("back", 1));
+        backAfterQuit = getBoolean("backAfterQuit", false);
         
 	}
 	
@@ -158,6 +161,12 @@ public class CPEConfig {
     		out.write("spawn=" + commandCosts.get("spawn") + "\r\n");
     		out.write("bed=" + commandCosts.get("bed") + "\r\n");
     		out.write("buyexp=" + commandCosts.get("buyexp") + "\r\n");
+    		out.write("back=" + commandCosts.get("back") + "\r\n");
+    		out.write("\r\n");
+    		out.write("# Using \"/back\" after quit\r\n");
+    		out.write("#	Here you specify whether or not a player may teleport\r\n");
+    		out.write("#	to his last death location after he had quit.\r\n");
+    		out.write("backAfterQuit=" + backAfterQuit + "\r\n");
     		out.close();
     	} catch (Exception e) {
     		System.out.println(e);

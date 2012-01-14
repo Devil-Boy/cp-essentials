@@ -35,7 +35,7 @@ public class CPECommandListener implements CommandExecutor{
 		}
 		
 		// CP Check
-		if ((label.equalsIgnoreCase("chelp") || label.equalsIgnoreCase("day") || label.equalsIgnoreCase("night") || label.equalsIgnoreCase("ctp") || label.equalsIgnoreCase("spawn") || label.equalsIgnoreCase("bed") || label.equalsIgnoreCase("buyexp")) && !plugin.cpLoaded) {
+		if (!(label.equalsIgnoreCase("creative") || label.equalsIgnoreCase("survival") || label.equalsIgnoreCase("cgive") || label.equalsIgnoreCase("i")) && !plugin.cpLoaded) {
 			ply.sendMessage(ChatColor.RED + "This command is only availible on servers where CommandPoints is installed.");
 			return true;
 		}
@@ -100,6 +100,13 @@ public class CPECommandListener implements CommandExecutor{
 						availableCommands.add("/buyexp (free)");
 					} else {
 						availableCommands.add("/buyexp");
+					}
+				}
+				if (plugin.hasPermissions(ply, "CPE.back")) {
+					if (plugin.hasPermissions(ply, "CPE.back.free")) {
+						availableCommands.add("/back (free)");
+					} else {
+						availableCommands.add("/back");
 					}
 				}
 				String outCommandList = "";
@@ -484,6 +491,50 @@ public class CPECommandListener implements CommandExecutor{
 					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
 				}
 			}else{
+				ply.sendMessage(ChatColor.RED + "You don't have an account.");
+			}
+			return true;
+		}
+		
+		// back command
+		if (label.equalsIgnoreCase("back")) {
+			// Check for permissions
+			if (!plugin.hasPermissions(ply, "CPE.back")) {
+				ply.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
+				return true;
+			}
+			
+			if (plugin.hasPermissions(ply, "CPE.back.free")) {
+				if (plugin.deathPoints.containsKey(ply.getName())) {
+					ply.teleport(plugin.deathPoints.get(ply.getName()));
+				} else {
+					if (plugin.pluginSettings.backAfterQuit) {
+						ply.sendMessage(ChatColor.RED + "You do not have a death location.");
+					} else {
+						ply.sendMessage(ChatColor.RED + "You do not have a death location. Perhaps you left the server?");
+					}
+				}
+				return true;
+			}
+			
+			if (cpAPI.hasAccount(ply.getName(), plugin)) {
+				if (cpAPI.hasPoints(ply.getName(), plugin.pluginSettings.commandCosts.get("back"), plugin)) {
+					if (plugin.deathPoints.containsKey(ply.getName())) {
+						ply.teleport(plugin.deathPoints.get(ply.getName()));
+						plugin.deathPoints.remove(ply.getName()); // Remove him from the database
+						cpAPI.removePoints(ply.getName(), plugin.pluginSettings.commandCosts.get("back"), "Teleported to death location", plugin);
+						ply.sendMessage(ChatColor.BLUE + "You still have: " + cpAPI.getPoints(ply.getName(), plugin) + " points left");
+					} else {
+						if (plugin.pluginSettings.backAfterQuit) {
+							ply.sendMessage(ChatColor.RED + "You do not have a death location. Maybe you already used this command.");
+						} else {
+							ply.sendMessage(ChatColor.RED + "You do not have a death location. Maybe you already used this command left the server.");
+						}
+					}
+				} else {
+					ply.sendMessage(ChatColor.RED + "You don't have enough points to run this command.");
+				}
+			} else {
 				ply.sendMessage(ChatColor.RED + "You don't have an account.");
 			}
 			return true;

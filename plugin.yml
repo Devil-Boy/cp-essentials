@@ -1,6 +1,6 @@
 name: CommandPointsEssentials
 main: pgDev.bukkit.CommandPointsEssentials.CommandPointsEssentials
-version: 0.4
+version: 0.5
 author: PG Dev Team
 authors: [Devil Boy, Blackside921]
 description: Essential commands that any player can execute with the necessary amount of commandpoints.
@@ -51,19 +51,15 @@ commands:
       usage: /<command>
    buyexp:
       description: Purchase EXP levels.
+      usage: /<command> [amount]
+   back:
+      description: Teleport to death location.
       usage: /<command>
       
 permissions:
     CPE.*:
         default: op
-        description: Gives access to the essential admin commands.
-        children:
-            CPE.creative: true
-            CPE.survival: true
-            CPE.cgive: true
-            CPE.ctp: true
-            CPE.day: true
-            CPE.night: true
+        description: Gives access to the cpessentials commands.
     CPE.chelp:
         default: true
         description: Is allowed to see what commands are available.
@@ -122,3 +118,9 @@ permissions:
     CPE.buyexp.free:
         default: op
         description: Can get EXP levels for free.
+    CPE.back:
+        default: true
+        description: Can teleport to death location.
+    CPE.back.free:
+        default: op
+        description: Can teleport to death location for free.

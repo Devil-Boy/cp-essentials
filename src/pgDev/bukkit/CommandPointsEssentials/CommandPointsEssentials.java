@@ -3,6 +3,7 @@ package pgDev.bukkit.CommandPointsEssentials;
 import java.io.*;
 import java.util.*;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event;
@@ -27,8 +28,9 @@ public class CommandPointsEssentials extends JavaPlugin {
     private static PermissionHandler Permissions;
 	
 	// Listeners
-    private final CommandPointsEssentialsPlayerListener playerListener = new CommandPointsEssentialsPlayerListener(this);
+    private final CPEPlayerListener playerListener = new CPEPlayerListener(this);
     //private CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
+    private final CPEEntityListener entityListener = new CPEEntityListener(this);
     
     // File Locations
     String pluginMainDir = "./plugins/CommandPointsEssentials";
@@ -45,6 +47,9 @@ public class CommandPointsEssentials extends JavaPlugin {
     
     // /accept vs /caccept
     String cAcceptOr;
+    
+    // Death Locations temp database
+    public HashMap<String, Location> deathPoints = new HashMap<String, Location>();
     
     public void onEnable() {
     	// Check for the plugin directory (create if it does not exist)
@@ -82,7 +87,7 @@ public class CommandPointsEssentials extends JavaPlugin {
         // Send commands to the executor
     	CPECommandListener commandListener = new CPECommandListener(this, cpAPI);
         String[] commandList = {"chelp", "creative", "survival", "ctp", "cgive", "i", "day", "night",
-        		"spawn", "bed", "accept", "caccept", "reject", "creject", "buyexp"};
+        		"spawn", "bed", "accept", "caccept", "reject", "creject", "buyexp", "back"};
         boolean backupAccept = false;
         if (mcMMOinstalled()) {
         	backupAccept = true;
@@ -114,6 +119,7 @@ public class CommandPointsEssentials extends JavaPlugin {
         // Register events
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
         
     	// Check if we haven't disabled
     	if (this.isEnabled()) {

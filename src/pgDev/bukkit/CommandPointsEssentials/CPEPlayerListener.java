@@ -1,5 +1,8 @@
 package pgDev.bukkit.CommandPointsEssentials;
 
+import java.util.HashMap;
+
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.*;
 
@@ -7,20 +10,26 @@ import org.bukkit.event.player.*;
  * Handle events for all Player related events
  * @author pgDev
  */
-public class CommandPointsEssentialsPlayerListener extends PlayerListener {
+public class CPEPlayerListener extends PlayerListener {
     private final CommandPointsEssentials plugin;
-
-    public CommandPointsEssentialsPlayerListener(CommandPointsEssentials instance) {
+    
+    public CPEPlayerListener(CommandPointsEssentials instance) {
         plugin = instance;
     }
 
     public void onPlayerQuit(PlayerQuitEvent event) {
+    	// Remove teleport requests
     	if (plugin.ctps.containsKey(event.getPlayer().getName())) {
     		Player requester = plugin.getServer().getPlayer(plugin.ctps.get(event.getPlayer().getName()).requesterName);
     		if (requester != null) {
     			requester.sendMessage(event.getPlayer().getName() + " has left the server. Your ctp request has been terminated.");
     		}
     		plugin.ctps.remove(event.getPlayer());
+    	}
+    	
+    	// Can he go back?
+    	if (!plugin.pluginSettings.backAfterQuit && plugin.deathPoints.containsKey(event.getPlayer().getName())) {
+    		plugin.deathPoints.remove(event.getPlayer().getName());
     	}
     }
     

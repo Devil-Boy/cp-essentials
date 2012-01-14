@@ -11,3 +11,9 @@ night=1
 spawn=1
 bed=1
 buyexp=1
+back=1
+
+# Using "/back" after quit
+#	Here you specify whether or not a player may teleport
+#	to his last death location after he had quit.
+backAfterQuit=false
