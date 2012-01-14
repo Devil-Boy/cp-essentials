@@ -509,9 +509,9 @@ public class CPECommandListener implements CommandExecutor{
 					ply.teleport(plugin.deathPoints.get(ply.getName()));
 				} else {
 					if (plugin.pluginSettings.backAfterQuit) {
-						ply.sendMessage(ChatColor.RED + "You do not have a death location.");
+						ply.sendMessage(ChatColor.RED + "You do not have a death location. Maybe you already used this command.");
 					} else {
-						ply.sendMessage(ChatColor.RED + "You do not have a death location. Perhaps you left the server?");
+						ply.sendMessage(ChatColor.RED + "You do not have a death location. Maybe you already used this command or left the server.");
 					}
 				}
 				return true;
@@ -528,7 +528,7 @@ public class CPECommandListener implements CommandExecutor{
 						if (plugin.pluginSettings.backAfterQuit) {
 							ply.sendMessage(ChatColor.RED + "You do not have a death location. Maybe you already used this command.");
 						} else {
-							ply.sendMessage(ChatColor.RED + "You do not have a death location. Maybe you already used this command left the server.");
+							ply.sendMessage(ChatColor.RED + "You do not have a death location. Maybe you already used this command or left the server.");
 						}
 					}
 				} else {
