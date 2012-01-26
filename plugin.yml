@@ -1,6 +1,6 @@
 name: CommandPointsEssentials
 main: pgDev.bukkit.CommandPointsEssentials.CommandPointsEssentials
-version: 0.5
+version: 0.6
 author: PG Dev Team
 authors: [Devil Boy, Blackside921]
 description: Essential commands that any player can execute with the necessary amount of commandpoints.

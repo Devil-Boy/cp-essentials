@@ -5,8 +5,6 @@ import java.util.*;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -118,8 +116,8 @@ public class CommandPointsEssentials extends JavaPlugin {
         
         // Register events
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
+        pm.registerEvents(playerListener, this);
+        pm.registerEvents(entityListener, this);
         
     	// Check if we haven't disabled
     	if (this.isEnabled()) {

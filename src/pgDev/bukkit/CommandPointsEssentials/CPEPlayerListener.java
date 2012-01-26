@@ -1,23 +1,23 @@
 package pgDev.bukkit.CommandPointsEssentials;
 
-import java.util.HashMap;
-
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
 /**
  * Handle events for all Player related events
  * @author pgDev
  */
-public class CPEPlayerListener extends PlayerListener {
+public class CPEPlayerListener implements Listener {
     private final CommandPointsEssentials plugin;
     
     public CPEPlayerListener(CommandPointsEssentials instance) {
         plugin = instance;
     }
-
+    
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
     	// Remove teleport requests
     	if (plugin.ctps.containsKey(event.getPlayer().getName())) {
